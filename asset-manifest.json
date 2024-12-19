@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/panda-news/static/css/main.bed1c58a.css",
-    "main.js": "/panda-news/static/js/main.3d01c09f.js",
+    "main.js": "/panda-news/static/js/main.bdfb8be2.js",
     "index.html": "/panda-news/index.html",
     "main.bed1c58a.css.map": "/panda-news/static/css/main.bed1c58a.css.map",
-    "main.3d01c09f.js.map": "/panda-news/static/js/main.3d01c09f.js.map"
+    "main.bdfb8be2.js.map": "/panda-news/static/js/main.bdfb8be2.js.map"
   },
   "entrypoints": [
     "static/css/main.bed1c58a.css",
-    "static/js/main.3d01c09f.js"
+    "static/js/main.bdfb8be2.js"
   ]
 }
