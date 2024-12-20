@@ -1,9 +1,4 @@
-import { useEffect, useState } from 'react';
-
-import { Box, Container, SimpleGrid, Spinner, Text } from '@chakra-ui/react';
-
-import { Card } from '@/ui-components';
-
+// Dashboard.tsx
 import {
   ChartByLetter,
   ChartByTemperature,
@@ -12,6 +7,18 @@ import {
 } from '@/components';
 import { useCountriesQuery, useCountryFilters, useIsMobile } from '@/hooks';
 import { Continents } from '@/shared';
+import { Card } from '@/ui-components';
+import {
+  Box,
+  Container,
+  SimpleGrid,
+  Skeleton,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+
+const LazyMap = lazy(() => import('./LazyMap'));
 
 export const Dashboard = () => {
   const continentOptions = Object.values(Continents);
@@ -19,16 +26,27 @@ export const Dashboard = () => {
   const { handleFilter, filteredCountries } = useCountryFilters(countries);
   const [boundingBox, setBoundingBox] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
-  const firstCountry = filteredCountries[0]?.maps;
+  const firstCountry = useMemo(
+    () => filteredCountries[0]?.maps,
+    [filteredCountries]
+  );
 
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    const cache = new Map();
+
     const fetchBoundingBox = async (relationUrl: string) => {
       const match = relationUrl.match(/relation\/(\d+)/);
       if (match) {
         const relationId = match[1];
+        if (cache.has(relationId)) {
+          setBoundingBox(cache.get(relationId));
+          return;
+        }
+
         setLoading(true);
         try {
           const response = await fetch(
@@ -36,7 +54,9 @@ export const Dashboard = () => {
           );
           const data = await response.json();
           const { minlat, minlon, maxlat, maxlon } = data.elements[0].bounds;
-          setBoundingBox(`${minlon},${minlat},${maxlon},${maxlat}`);
+          const bounds = `${minlon},${minlat},${maxlon},${maxlat}`;
+          cache.set(relationId, bounds);
+          setBoundingBox(bounds);
         } catch (error) {
           console.error('Error fetching bounding box:', error);
         } finally {
@@ -49,6 +69,16 @@ export const Dashboard = () => {
       fetchBoundingBox(firstCountry.openStreetMaps);
     }
   }, [firstCountry]);
+
+  useEffect(() => {
+    if (boundingBox) {
+      const timer = setTimeout(() => setShowMap(true), 1000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+    return undefined; // Explicitly return undefined for paths not entering the condition
+  }, [boundingBox]);
 
   return (
     <Box flexGrow={1}>
@@ -70,24 +100,15 @@ export const Dashboard = () => {
         {firstCountry && boundingBox && (
           <Card>
             <Text fontSize="lg" mb={4}>
-              Map Preview for the First Filtered Country:
+              Map Preview for the First Filtered Country1:
             </Text>
             {loading ? (
-              <Spinner />
-            ) : (
-              <Box>
-                <Box
-                  as="iframe"
-                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${boundingBox}&layer=mapnik`}
-                  width="100%"
-                  height="300px"
-                  border="0"
-                  allowFullScreen
-                  loading="lazy"
-                  title="first country map"
-                />
-              </Box>
-            )}
+              <Skeleton height="300px" width="100%" />
+            ) : showMap ? (
+              <Suspense fallback={<Spinner />}>
+                <LazyMap boundingBox={boundingBox} />
+              </Suspense>
+            ) : null}
           </Card>
         )}
       </SimpleGrid>
