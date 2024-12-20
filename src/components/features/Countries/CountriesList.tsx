@@ -13,8 +13,7 @@ type CountriesListProps = {
 
 export const CountriesList: React.FC<CountriesListProps> = ({ countries }) => {
   const { ITEMS_PER_PAGE } = PAGINATION;
-
-  const { paginatedItems, handlePageClick } = usePagination(
+  const { paginatedItems, handlePageClick, totalPages } = usePagination(
     countries,
     ITEMS_PER_PAGE
   );
@@ -28,7 +27,7 @@ export const CountriesList: React.FC<CountriesListProps> = ({ countries }) => {
   return (
     <VStack w="full" py={4}>
       <CountryPaginate
-        pageCount={Math.ceil(countries.length / ITEMS_PER_PAGE)}
+        pageCount={totalPages}
         onPageChange={({ selected }) => handlePageClick(selected)}
       />
       <Grid
@@ -48,7 +47,7 @@ export const CountriesList: React.FC<CountriesListProps> = ({ countries }) => {
         ))}
       </Grid>
       <CountryPaginate
-        pageCount={Math.ceil(countries.length / ITEMS_PER_PAGE)}
+        pageCount={totalPages}
         onPageChange={({ selected }) => handlePageClick(selected)}
       />
     </VStack>
