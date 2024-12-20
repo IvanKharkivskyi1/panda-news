@@ -4,7 +4,9 @@ import { Box, Flex, Heading, Image, Text } from '@chakra-ui/react';
 
 import { Card } from '@/ui-components';
 
-import { WeatherInfo } from '@/components';
+import { CountryCardSkeleton, WeatherInfo } from '@/components';
+import { useEnrichedCountries } from '@/hooks';
+import type { Country } from '@/shared';
 
 type CountryCardProps = {
   name: {
@@ -14,6 +16,7 @@ type CountryCardProps = {
   capital: string[] | null;
   continent: string;
   flag: string | null;
+  countries: Country[];
 };
 
 export const CountryCard: React.FC<CountryCardProps> = ({
@@ -21,10 +24,13 @@ export const CountryCard: React.FC<CountryCardProps> = ({
   capital,
   continent,
   flag,
+  countries,
 }) => {
   const capitalCity = capital?.[0] || null;
-
-  return (
+  const { isLoading } = useEnrichedCountries(countries);
+  return isLoading ? (
+    <CountryCardSkeleton />
+  ) : (
     <Card>
       <Box>
         <Heading size="sm" mb={2}>

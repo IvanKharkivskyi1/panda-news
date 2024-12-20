@@ -1,8 +1,9 @@
-import { CountryCardSkeleton, EmptyState } from '@/components';
+import { Grid, VStack } from '@chakra-ui/react';
+
+import { EmptyState } from '@/components';
 import { usePagination } from '@/hooks';
 import { PAGINATION, type Country } from '@/shared';
-import { useCountriesContext } from '@/store';
-import { Grid, VStack } from '@chakra-ui/react';
+
 import { CountryCard } from './CountryCard';
 import { CountryPaginate } from './CountryPaginate';
 
@@ -11,8 +12,6 @@ type CountriesListProps = {
 };
 
 export const CountriesList: React.FC<CountriesListProps> = ({ countries }) => {
-  const { isFetching } = useCountriesContext();
-
   const { ITEMS_PER_PAGE } = PAGINATION;
 
   const { paginatedItems, handlePageClick } = usePagination(
@@ -20,7 +19,7 @@ export const CountriesList: React.FC<CountriesListProps> = ({ countries }) => {
     ITEMS_PER_PAGE
   );
 
-  if (countries.length === 0) {
+  if (!countries || countries.length === 0) {
     return (
       <EmptyState message="No countries found. Try adjusting your search or filters." />
     );
@@ -37,19 +36,16 @@ export const CountriesList: React.FC<CountriesListProps> = ({ countries }) => {
         gap={4}
         w="full"
       >
-        {paginatedItems.map((country, index) =>
-          isFetching ? (
-            <CountryCardSkeleton key={`skeleton-${index}`} />
-          ) : (
-            <CountryCard
-              key={country.code || country.name.common}
-              name={country.name}
-              capital={country.capital || 'No capital available'}
-              continent={country.continents?.[0] || 'Unknown'}
-              flag={country.flags.png}
-            />
-          )
-        )}
+        {paginatedItems.map(country => (
+          <CountryCard
+            key={country.code || country.name.common}
+            name={country.name}
+            capital={country.capital || 'No capital available'}
+            continent={country.continents?.[0] || 'Unknown'}
+            flag={country.flags.png}
+            countries={countries}
+          />
+        ))}
       </Grid>
       <CountryPaginate
         pageCount={Math.ceil(countries.length / ITEMS_PER_PAGE)}

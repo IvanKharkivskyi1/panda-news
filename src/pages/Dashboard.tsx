@@ -92,6 +92,7 @@ export const Dashboard = () => {
         )}
       </SimpleGrid>
       <Text>Lorem ipsum</Text>
+      <Text>Lorem ipsum</Text>
     </Box>
   );
 };

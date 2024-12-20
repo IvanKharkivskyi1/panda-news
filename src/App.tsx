@@ -1,6 +1,12 @@
-import { AppThemeProvider, CountriesProvider, LanguageProvider } from '@/store';
-import { store } from '@/store/slices/store';
 import { Provider } from 'react-redux';
+
+import {
+  AppThemeProvider,
+  CountriesProvider,
+  LanguageProvider,
+  store,
+} from '@/store';
+
 import './App.css';
 import { Router } from './components';
 

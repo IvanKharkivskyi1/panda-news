@@ -1,14 +1,15 @@
+import { Box, HStack, Text } from '@chakra-ui/react';
+
 import {
   CountriesList,
-  EmptyState,
   FilterDropdown,
   SearchBar,
   SortDropdown,
 } from '@/components';
+
 import { useCountryFilters } from '@/hooks';
 import { Continents } from '@/shared';
 import { useCountriesContext } from '@/store';
-import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 
 export const Countries = () => {
   const { countries, isError, error } = useCountriesContext();
@@ -19,15 +20,6 @@ export const Countries = () => {
 
   if (isError) {
     return <Text>Error: {(error as Error).message}</Text>;
-  }
-
-  if (!countries || countries.length === 0) {
-    return (
-      <Flex align="center" justify="center" h="100vh">
-        No countries available. Please try again later.
-        <EmptyState message="empty state" />
-      </Flex>
-    );
   }
 
   return (
