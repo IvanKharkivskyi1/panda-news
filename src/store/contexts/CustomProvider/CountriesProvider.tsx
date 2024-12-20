@@ -1,36 +1,36 @@
 import { useCountriesQuery } from '@/hooks';
 import type { Country } from '@/shared';
-import { createContext, useContext } from 'react';
+import React, { createContext, ReactNode, useContext } from 'react';
 
-interface CountriesContextValue {
-  countries: Country[];
+type CountriesContextType = {
   isLoading: boolean;
+  isFetching: boolean;
+  countries: Country[];
   isError: boolean;
   error: Error | null;
-}
+};
 
-const CountriesContext = createContext<CountriesContextValue | null>(null);
+const CountriesContext = createContext<CountriesContextType>({
+  isLoading: false,
+  isFetching: false,
+  countries: [],
+  isError: false,
+  error: null,
+});
 
-interface CountriesProviderProps {
-  children: React.ReactNode;
-}
-
-export const CountriesProvider: React.FC<CountriesProviderProps> = ({
+export const CountriesProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const { countries, isLoading, isError, error } = useCountriesQuery();
+  const { countries, isLoading, isFetching, isError, error } =
+    useCountriesQuery();
 
   return (
-    <CountriesContext.Provider value={{ countries, isLoading, isError, error }}>
+    <CountriesContext.Provider
+      value={{ countries, isLoading, isFetching, isError, error }}
+    >
       {children}
     </CountriesContext.Provider>
   );
 };
 
-export const useCountries = () => {
-  const context = useContext(CountriesContext);
-  if (!context) {
-    throw new Error('useCountries must be used within a CountriesProvider');
-  }
-  return context;
-};
+export const useCountriesContext = () => useContext(CountriesContext);

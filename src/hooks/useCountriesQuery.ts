@@ -1,11 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
+import { useIsFetching, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { REACT_APP_REST_COUNTRIES_URL, type Country } from '../shared';
 
 export const useCountriesQuery = () => {
+  const isFetchingGlobal = useIsFetching();
   const {
     data: countries = [],
-    isLoading,
+    isFetching,
     isError,
     error,
   } = useQuery<Country[], Error>({
@@ -21,9 +22,12 @@ export const useCountriesQuery = () => {
     },
   });
 
+  const isLoading = isFetchingGlobal > 0;
+
   return {
     countries,
     isLoading,
+    isFetching,
     isError,
     error,
   };

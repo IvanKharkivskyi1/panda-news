@@ -59,7 +59,7 @@ export const Dashboard = () => {
           label="Filter by Region"
         />
       </Container>
-      <SimpleGrid columns={isMobile ? 1 : 2} spacing={4}>
+      <SimpleGrid columns={isMobile ? 1 : 2} spacing={4} mb={8}>
         <DateWidget initialDate="2024-12-19" />
         <ChartByLetter filteredCountries={filteredCountries} />
         <ChartByTemperature
@@ -91,6 +91,7 @@ export const Dashboard = () => {
           </Card>
         )}
       </SimpleGrid>
+      <Text>Lorem ipsum</Text>
     </Box>
   );
 };
