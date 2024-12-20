@@ -1,4 +1,3 @@
-// Dashboard.tsx
 import {
   ChartByLetter,
   ChartByTemperature,
@@ -77,7 +76,7 @@ export const Dashboard = () => {
         clearTimeout(timer);
       };
     }
-    return undefined; // Explicitly return undefined for paths not entering the condition
+    return undefined;
   }, [boundingBox]);
 
   return (

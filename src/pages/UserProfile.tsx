@@ -1,45 +1,43 @@
+import { auth } from '@/components/router/NavBar/Firebase';
+import { Box, Button, Text, useToast } from '@chakra-ui/react';
+import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export const UserProfile: React.FC = () => {
-  const [userData, setUserData] = useState<{ email: string } | null>(null);
-  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const toast = useToast();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('You need to log in first.');
-      navigate('/');
-      return;
-    }
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
 
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/user`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-        const data = await response.json();
-        setUserData(data);
-      } catch (error) {
-        console.error(error);
-        alert('Something went wrong.');
-      }
-    };
-
-    fetchUserData();
-  }, [navigate]);
-
-  if (!userData) {
-    return <p>Loading...</p>;
-  }
+  const handleLogout = async () => {
+    await signOut(auth);
+    setCurrentUser(null);
+    toast({
+      title: 'Logged out!',
+      description: 'You have been logged out.',
+      status: 'info',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>User Profile</h1>
-      <p>Email: {userData.email}</p>
-    </div>
+    <Box>
+      {currentUser ? (
+        <>
+          <Text>{`Logged in as ${currentUser.email}`}</Text>
+          <Button colorScheme="green" onClick={handleLogout}>
+            Log Out
+          </Button>
+        </>
+      ) : (
+        <Text>You are not logged in.</Text>
+      )}
+    </Box>
   );
 };
