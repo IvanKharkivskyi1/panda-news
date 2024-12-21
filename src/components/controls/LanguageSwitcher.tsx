@@ -57,6 +57,7 @@ export const LanguageSwitcher: React.FC = () => {
       <MenuButton
         as={Button}
         colorScheme="green"
+        size="sm"
         leftIcon={
           <Image
             src={flags[language]}

@@ -1,4 +1,4 @@
-import { extendTheme, ThemeConfig } from '@chakra-ui/react';
+import { extendTheme, StyleFunctionProps, ThemeConfig } from '@chakra-ui/react';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -7,16 +7,18 @@ const config: ThemeConfig = {
 
 const sharedStyles = {
   w: 'full',
-  maxW: '1200px',
+  maxW: '1400px',
   mx: 'auto',
+  justifyContent: 'space-between',
+  alignItems: 'center',
 };
 
 export const customTheme = extendTheme({
   config,
   styles: {
-    global: (props: { colorMode: string }) => ({
+    global: (props: StyleFunctionProps) => ({
       body: {
-        bg: props.colorMode === 'light' ? 'customGreen.200' : 'mint.800',
+        bg: props.colorMode === 'light' ? 'customGreen.100' : 'mint.800',
       },
       '::-webkit-scrollbar': {
         width: '10px',
@@ -62,6 +64,42 @@ export const customTheme = extendTheme({
     },
   },
   components: {
+    NavLink: {
+      baseStyle: (props: StyleFunctionProps) => {
+        return {
+          position: 'relative',
+          zIndex: 3,
+          color: props.colorMode === 'light' ? 'white' : 'gray.800',
+          _before: {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            background: props.colorMode === 'light' ? 'green.500' : 'green.200',
+            transform: 'skew(-18deg)',
+            transition: 'background 0.3s',
+            zIndex: 0,
+          },
+          _hover: {
+            _before: {
+              bg: props.colorMode === 'light' ? 'green.600' : 'green.300',
+            },
+          },
+          _active: {
+            _before: {
+              bg: props.colorMode === 'light' ? 'green.700' : 'green.400',
+            },
+          },
+          _focus: {
+            _before: {
+              bg: props.colorMode === 'light' ? 'green.700' : 'green.400',
+            },
+          },
+        };
+      },
+    },
     nav: {
       baseStyle: {
         ...sharedStyles,
@@ -71,13 +109,33 @@ export const customTheme = extendTheme({
       baseStyle: {
         ...sharedStyles,
         flexGrow: 1,
+        bg: 'customGreen.200',
         _dark: {
           bg: 'mint.900',
           color: 'white',
         },
       },
     },
-    header: {
+    supHeader: {
+      baseStyle: {
+        bg: 'green.300',
+        borderBottom: '1px solid white',
+        _dark: {
+          bg: 'mint.800',
+          color: 'white',
+        },
+      },
+    },
+    subHeader: {
+      baseStyle: {
+        bg: 'green.200',
+        _dark: {
+          bg: 'mint.700',
+          color: 'white',
+        },
+      },
+    },
+    sidebar: {
       baseStyle: {
         bg: 'green.200',
         _dark: {

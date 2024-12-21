@@ -81,7 +81,7 @@ export const Dashboard = () => {
 
   return (
     <Box flexGrow={1}>
-      <Container w="400px" mb={4}>
+      <Container maxW="400px" mb={4}>
         <FilterDropdown
           options={continentOptions}
           onFilter={handleFilter}

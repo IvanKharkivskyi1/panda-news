@@ -62,7 +62,11 @@ export const AuthModal: React.FC = () => {
 
   return (
     <>
-      <Button onClick={currentUser ? handleLogout : onOpen}>
+      <Button
+        onClick={currentUser ? handleLogout : onOpen}
+        size="sm"
+        colorScheme="green"
+      >
         {currentUser ? 'Logout' : 'Login/Register'}
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>

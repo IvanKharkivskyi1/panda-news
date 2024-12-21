@@ -10,6 +10,7 @@ export const ThemeSwitcher = () => {
       icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
       onClick={toggleColorMode}
       colorScheme="green"
+      size="sm"
     />
   );
 };

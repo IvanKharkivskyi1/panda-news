@@ -8,24 +8,19 @@ import {
   New,
   UserProfile,
 } from '@/pages';
-import { Flex, useColorMode, useStyleConfig } from '@chakra-ui/react';
+import { Flex, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { MainLayout } from './MainLayout';
 import { NavBar } from './NavBar';
 
 export const Router: React.FC = () => {
-  const styles = useStyleConfig('main');
   const { colorMode } = useColorMode();
 
   return (
     <Flex flexDir="column" h="100vh" justifyContent="space-between">
       <NavBar />
-      <Flex
-        sx={styles}
-        overflow="auto"
-        p={4}
-        boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)"
-      >
+      <MainLayout>
         <Routes>
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/" element={<Dashboard />} />
@@ -36,7 +31,7 @@ export const Router: React.FC = () => {
           <Route path="/new" element={<New />} />
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
-      </Flex>
+      </MainLayout>
       <Flex
         bg={colorMode === 'light' ? 'green.200' : 'mint.700'}
         p={4}
