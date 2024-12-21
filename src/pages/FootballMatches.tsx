@@ -59,13 +59,13 @@ export const FootballMatches = () => {
   );
 
   return (
-    <Tabs isLazy>
+    <Tabs isLazy variant="soft-rounded" colorScheme="green">
       <TabList overflowX="auto" maxW="1050px" pb={1}>
         {Object.keys(groupedMatches).map(region => (
           <Tab key={region}>{region}</Tab>
         ))}
       </TabList>
-      <TabPanels>
+      <TabPanels> 
         {Object.entries(groupedMatches).map(([region, countries]) => (
           <TabPanel key={region}>
             <Tabs isLazy>
