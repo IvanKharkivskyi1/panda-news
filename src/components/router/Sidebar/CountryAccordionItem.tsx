@@ -50,7 +50,7 @@ export const CountryAccordionItem: React.FC<CountryAccordionItemProps> = ({
               <strong>Temperature:</strong> {temperature}
             </Text>
             <Text mt={2}>
-              <strong>Continent:</strong> {capital}
+              <strong>Capital:</strong> {capital}
             </Text>
           </AccordionPanel>
         </>

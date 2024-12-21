@@ -13,7 +13,6 @@ export const SidebarAccordion: React.FC<SidebarAccordionProps> = ({
 }) => {
   const { countries } = useCountriesContext();
   const { filteredCountries } = useCountryFilters(countries);
-  console.log(filteredCountries);
 
   return (
     <Accordion

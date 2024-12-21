@@ -1,88 +1,143 @@
-import { useEffect, useState } from 'react';
+import { useFootballMatches, type Match } from '@/hooks/useFootballMatches';
+import type { Country } from '@/shared';
+import { useCountriesContext } from '@/store';
+import {
+  Box,
+  Image,
+  SimpleGrid,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from '@chakra-ui/react';
 
-import axios from 'axios';
+const groupMatchesByRegionAndCountry = (
+  matches: Match[],
+  countries: Country[]
+) => {
+  return matches.reduce(
+    (acc, match) => {
+      const leagueCountry = match.league.country;
+      const country = countries.find(c => c.name.common === leagueCountry);
 
-import { Spinner, Text, VStack } from '@chakra-ui/react';
+      if (country) {
+        const region = country.region;
 
-import { REACT_APP_FOOTBALL_API_KEY, REACT_APP_FOOTBALL_URL } from '@/shared';
-import { Card } from '@/ui-components';
+        if (!acc[region]) {
+          acc[region] = {};
+        }
 
-if (!REACT_APP_FOOTBALL_API_KEY || !REACT_APP_FOOTBALL_URL) {
-  throw new Error(
-    'REACT_APP_FOOTBALL_API_KEY or REACT_APP_FOOTBALL_URL is not defined in the environment variables'
+        if (!acc[region][country.name.common]) {
+          acc[region][country.name.common] = {};
+        }
+
+        if (!acc[region][country.name.common][match.league.name]) {
+          acc[region][country.name.common][match.league.name] = [];
+        }
+
+        acc[region][country.name.common][match.league.name].push(match);
+      }
+
+      return acc;
+    },
+    {} as Record<string, Record<string, Record<string, Match[]>>>
   );
-}
-
-type Match = {
-  fixture: {
-    id: number;
-    date: string;
-  };
-  teams: {
-    home: { name: string; logo: string };
-    away: { name: string; logo: string };
-  };
-  goals: {
-    home: number | null;
-    away: number | null;
-  };
 };
 
 export const FootballMatches = () => {
-  const [matches, setMatches] = useState<Match[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { data: matches, isLoading, error } = useFootballMatches();
+  const { countries } = useCountriesContext();
 
-  useEffect(() => {
-    const fetchMatches = async () => {
-      try {
-        const response = await axios.get<{ response: Match[] }>(
-          `${REACT_APP_FOOTBALL_URL}/fixtures`,
-          {
-            headers: {
-              'x-rapidapi-key': REACT_APP_FOOTBALL_API_KEY,
-              'x-rapidapi-host': 'v3.football.api-sports.io',
-            },
-            params: { date: new Date().toISOString().split('T')[0] },
-          }
-        );
-        setMatches(response.data.response);
-      } catch (error) {
-        console.error('Failed to fetch matches:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  if (isLoading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error loading matches</Text>;
 
-    fetchMatches();
-  }, []);
-
-  if (loading)
-    return (
-      <Spinner
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="green.200"
-        color="green.800"
-        size="xl"
-      />
-    );
+  const groupedMatches = groupMatchesByRegionAndCountry(
+    matches || [],
+    countries || []
+  );
 
   return (
-    <VStack spacing={4} align="stretch">
-      {matches.map(match => (
-        <Card key={match.fixture.id}>
-          <Text fontWeight="bold">
-            {match.teams.home.name} vs {match.teams.away.name}
-          </Text>
-          <Text>
-            Score:{' '}
-            {match.goals.home !== null && match.goals.away !== null
-              ? `${match.goals.home} - ${match.goals.away}`
-              : 'Not available'}
-          </Text>
-          <Text>Date: {new Date(match.fixture.date).toLocaleString()}</Text>
-        </Card>
-      ))}
-    </VStack>
+    <Tabs isLazy>
+      <TabList overflowX="auto" maxW="1050px" pb={1}>
+        {Object.keys(groupedMatches).map(region => (
+          <Tab key={region}>{region}</Tab>
+        ))}
+      </TabList>
+      <TabPanels>
+        {Object.entries(groupedMatches).map(([region, countries]) => (
+          <TabPanel key={region}>
+            <Tabs isLazy>
+              <TabList overflowX="auto" maxW="1050px" pb={1}>
+                {Object.keys(countries).map(countryName => (
+                  <Tab key={countryName}>{countryName}</Tab>
+                ))}
+              </TabList>
+              <TabPanels>
+                {Object.entries(countries).map(([countryName, leagues]) => (
+                  <TabPanel key={countryName}>
+                    <Tabs isLazy>
+                      <TabList overflowX="auto" maxW="1050px" pb={1}>
+                        {Object.keys(leagues).map(leagueName => (
+                          <Tab key={leagueName} maxW="100px">
+                            {leagueName}
+                          </Tab>
+                        ))}
+                      </TabList>
+                      <TabPanels>
+                        {Object.entries(leagues).map(
+                          ([leagueName, matches]) => (
+                            <TabPanel key={leagueName}>
+                              <SimpleGrid columns={4} gap={2}>
+                                {matches.map(match => (
+                                  <Box
+                                    key={match.fixture.id}
+                                    p={4}
+                                    borderWidth="1px"
+                                    borderRadius="lg"
+                                    boxShadow="md"
+                                    bg={
+                                      match.fixture.status.short === 'FT'
+                                        ? 'green.500'
+                                        : undefined
+                                    }
+                                  >
+                                    <Text fontWeight="bold" mb={2}>
+                                      {match.teams.home.name} vs{' '}
+                                      {match.teams.away.name}
+                                    </Text>
+                                    <Image
+                                      src={match.league.logo}
+                                      alt={leagueName}
+                                      boxSize="50px"
+                                      mb={4}
+                                    />
+                                    <Text>
+                                      Score: {match.goals.home} -{' '}
+                                      {match.goals.away}
+                                    </Text>
+                                    <Text>
+                                      Date:{' '}
+                                      {new Date(
+                                        match.fixture.date
+                                      ).toLocaleString()}
+                                    </Text>
+                                  </Box>
+                                ))}
+                              </SimpleGrid>
+                            </TabPanel>
+                          )
+                        )}
+                      </TabPanels>
+                    </Tabs>
+                  </TabPanel>
+                ))}
+              </TabPanels>
+            </Tabs>
+          </TabPanel>
+        ))}
+      </TabPanels>
+    </Tabs>
   );
 };

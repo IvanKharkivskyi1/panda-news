@@ -38,3 +38,25 @@ export interface RawCountry {
   languages?: Record<string, string>;
   currencies?: Record<string, { name: string }>;
 }
+export type Match = {
+  fixture: {
+    id: number;
+    date: string;
+    status: {
+      short: string;
+    };
+  };
+  league: {
+    name: string;
+    logo: string;
+    country: string;
+  };
+  teams: {
+    home: { name: string; logo: string };
+    away: { name: string; logo: string };
+  };
+  goals: {
+    home: number | null;
+    away: number | null;
+  };
+};

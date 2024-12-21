@@ -45,7 +45,7 @@ export const NavBar = () => {
         </Flex>
       </Flex>
       <Flex sx={subHeaderStyles}>
-        <Flex as="nav" sx={styles}>
+        <Flex as="nav" sx={styles} px={2}>
           <Flex gap={2} flexWrap="wrap">
             <NavLink to="/dashboard">{translation('Dashboard')}</NavLink>
             <NavLink to="/counter">{translation('Counter')}</NavLink>
