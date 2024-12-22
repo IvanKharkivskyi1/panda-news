@@ -1,4 +1,5 @@
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useCountriesContext } from '@/store';
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -14,12 +15,12 @@ import {
   useStyleConfig,
   VStack,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { SidebarAccordion } from './SidebarAccordion';
 
 export const Sidebar: React.FC = () => {
   const isMobile = useIsMobile();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed, setIsCollapsed } = useCountriesContext();
 
   useEffect(() => {
     setIsCollapsed(isMobile);
@@ -54,6 +55,7 @@ export const Sidebar: React.FC = () => {
         )}
         <IconButton
           aria-label="Toggle Sidebar"
+          colorScheme="green"
           icon={isCollapsed ? <ArrowRightIcon /> : <ArrowLeftIcon />}
           onClick={toggleSidebar}
           variant="ghost"
@@ -81,7 +83,7 @@ export const Sidebar: React.FC = () => {
         >
           {isCollapsed ? null : <Text>Messages</Text>}
         </IconButton>
-        <SidebarAccordion isCollapsed={isCollapsed} />
+        <SidebarAccordion />
       </VStack>
     </Box>
   );

@@ -1,10 +1,11 @@
 import { useFootballMatches, type Match } from '@/hooks/useFootballMatches';
 import type { Country } from '@/shared';
 import { useCountriesContext } from '@/store';
+import { ClampedText, TooltipHover } from '@/ui-components';
 import {
   Box,
+  Grid,
   Image,
-  SimpleGrid,
   Tab,
   TabList,
   TabPanel,
@@ -48,8 +49,7 @@ const groupMatchesByRegionAndCountry = (
 
 export const FootballMatches = () => {
   const { data: matches, isLoading, error } = useFootballMatches();
-  const { countries } = useCountriesContext();
-
+  const { isCollapsed, countries } = useCountriesContext();
   if (isLoading) return <Text>Loading...</Text>;
   if (error) return <Text>Error loading matches</Text>;
 
@@ -59,37 +59,64 @@ export const FootballMatches = () => {
   );
 
   return (
-    <Tabs isLazy variant="soft-rounded" colorScheme="green">
-      <TabList overflowX="auto" maxW="1050px" pb={1}>
+    <Tabs
+      isLazy
+      variant="soft-rounded"
+      colorScheme="green"
+      maxW={isCollapsed ? '1300px' : '1120px'}
+    >
+      <TabList overflowX="auto" pb={1}>
         {Object.keys(groupedMatches).map(region => (
-          <Tab key={region}>{region}</Tab>
+          <Tab maxH="48px" lineHeight="14px" key={region}>
+            {region}
+          </Tab>
         ))}
       </TabList>
-      <TabPanels> 
+      <TabPanels>
         {Object.entries(groupedMatches).map(([region, countries]) => (
           <TabPanel key={region}>
-            <Tabs isLazy>
-              <TabList overflowX="auto" maxW="1050px" pb={1}>
+            <Tabs
+              isLazy
+              variant="soft-rounded"
+              colorScheme="green"
+              maxW={isCollapsed ? '1300px' : '1120px'}
+            >
+              <TabList overflowX="auto" pb={1}>
                 {Object.keys(countries).map(countryName => (
-                  <Tab key={countryName}>{countryName}</Tab>
+                  <Tab maxH="48px" lineHeight="14px" key={countryName}>
+                    {countryName}
+                  </Tab>
                 ))}
               </TabList>
               <TabPanels>
                 {Object.entries(countries).map(([countryName, leagues]) => (
                   <TabPanel key={countryName}>
-                    <Tabs isLazy>
-                      <TabList overflowX="auto" maxW="1050px" pb={1}>
+                    <Tabs
+                      isLazy
+                      variant="soft-rounded"
+                      colorScheme="green"
+                      maxW={isCollapsed ? '1300px' : '1120px'}
+                    >
+                      <TabList overflowX="auto" pb={1}>
                         {Object.keys(leagues).map(leagueName => (
-                          <Tab key={leagueName} maxW="100px">
-                            {leagueName}
-                          </Tab>
+                          <TooltipHover label={leagueName} key={leagueName}>
+                            <Tab key={leagueName} maxH="48px" lineHeight="14px">
+                              <ClampedText lines={2} maxW="100px">
+                                {leagueName}
+                              </ClampedText>
+                            </Tab>
+                          </TooltipHover>
                         ))}
                       </TabList>
                       <TabPanels>
                         {Object.entries(leagues).map(
                           ([leagueName, matches]) => (
                             <TabPanel key={leagueName}>
-                              <SimpleGrid columns={4} gap={2}>
+                              <Grid
+                                gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+                                gap={4}
+                                w="full"
+                              >
                                 {matches.map(match => (
                                   <Box
                                     key={match.fixture.id}
@@ -125,7 +152,7 @@ export const FootballMatches = () => {
                                     </Text>
                                   </Box>
                                 ))}
-                              </SimpleGrid>
+                              </Grid>
                             </TabPanel>
                           )
                         )}

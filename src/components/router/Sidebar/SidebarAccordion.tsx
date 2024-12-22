@@ -4,13 +4,7 @@ import { Accordion } from '@chakra-ui/react';
 import React from 'react';
 import { CountryAccordionItem } from './CountryAccordionItem';
 
-interface SidebarAccordionProps {
-  isCollapsed: boolean;
-}
-
-export const SidebarAccordion: React.FC<SidebarAccordionProps> = ({
-  isCollapsed,
-}) => {
+export const SidebarAccordion: React.FC = () => {
   const { countries } = useCountriesContext();
   const { filteredCountries } = useCountryFilters(countries);
 
@@ -26,7 +20,6 @@ export const SidebarAccordion: React.FC<SidebarAccordionProps> = ({
           flag={country.flags.png}
           temperature={country.temperature}
           capital={country.capital[0]}
-          isCollapsed={isCollapsed}
         />
       ))}
     </Accordion>

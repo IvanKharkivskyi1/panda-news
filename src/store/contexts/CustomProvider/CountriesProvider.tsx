@@ -1,6 +1,6 @@
 import { useCountriesQuery } from '@/hooks';
 import type { Country } from '@/shared';
-import React, { createContext, ReactNode, useContext } from 'react';
+import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 type CountriesContextType = {
   isLoading: boolean;
@@ -8,6 +8,8 @@ type CountriesContextType = {
   countries: Country[];
   isError: boolean;
   error: Error | null;
+  isCollapsed: boolean;
+  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const CountriesContext = createContext<CountriesContextType>({
@@ -16,6 +18,8 @@ const CountriesContext = createContext<CountriesContextType>({
   countries: [],
   isError: false,
   error: null,
+  isCollapsed: false,
+  setIsCollapsed: () => {},
 });
 
 export const CountriesProvider: React.FC<{ children: ReactNode }> = ({
@@ -23,10 +27,19 @@ export const CountriesProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const { countries, isLoading, isFetching, isError, error } =
     useCountriesQuery();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <CountriesContext.Provider
-      value={{ countries, isLoading, isFetching, isError, error }}
+      value={{
+        countries,
+        isLoading,
+        isFetching,
+        isError,
+        error,
+        isCollapsed,
+        setIsCollapsed,
+      }}
     >
       {children}
     </CountriesContext.Provider>

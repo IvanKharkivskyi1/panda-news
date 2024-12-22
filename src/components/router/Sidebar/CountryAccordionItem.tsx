@@ -1,3 +1,4 @@
+import { useCountriesContext } from '@/store';
 import {
   AccordionButton,
   AccordionItem,
@@ -12,7 +13,6 @@ interface CountryAccordionItemProps {
   flag: string;
   temperature?: number;
   capital: string;
-  isCollapsed: boolean;
 }
 
 export const CountryAccordionItem: React.FC<CountryAccordionItemProps> = ({
@@ -20,41 +20,48 @@ export const CountryAccordionItem: React.FC<CountryAccordionItemProps> = ({
   flag,
   temperature,
   capital,
-  isCollapsed,
 }) => {
+  const { isCollapsed } = useCountriesContext();
+
   return (
     <AccordionItem>
-      {({ isExpanded }) => (
-        <>
-          <AccordionButton>
-            {!isCollapsed && (
-              <Text
-                flex={1}
-                textAlign="left"
-                fontWeight={isExpanded ? '600' : '400'}
-              >
-                {name}
-              </Text>
-            )}
-            <Image
-              src={flag}
-              alt={`${name} flag`}
-              boxSize="20px"
-              mr={4}
-              borderRadius="full"
-            />
-          </AccordionButton>
+      {({ isExpanded }) => {
+        const shouldExpand = !isCollapsed && isExpanded;
 
-          <AccordionPanel pb={4}>
-            <Text>
-              <strong>Temperature:</strong> {temperature}
-            </Text>
-            <Text mt={2}>
-              <strong>Capital:</strong> {capital}
-            </Text>
-          </AccordionPanel>
-        </>
-      )}
+        return (
+          <>
+            <AccordionButton>
+              {!isCollapsed && (
+                <Text
+                  flex={1}
+                  textAlign="left"
+                  fontWeight={shouldExpand ? '600' : '400'}
+                >
+                  {name}
+                </Text>
+              )}
+              <Image
+                src={flag}
+                alt={`${name} flag`}
+                boxSize="20px"
+                mr={4}
+                borderRadius="full"
+              />
+            </AccordionButton>
+
+            {shouldExpand && (
+              <AccordionPanel pb={4}>
+                <Text>
+                  <strong>Temperature:</strong> {temperature}
+                </Text>
+                <Text mt={2}>
+                  <strong>Capital:</strong> {capital}
+                </Text>
+              </AccordionPanel>
+            )}
+          </>
+        );
+      }}
     </AccordionItem>
   );
 };
