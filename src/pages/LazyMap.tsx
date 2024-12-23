@@ -1,22 +1,22 @@
-import { Box } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
+
+const Iframe = chakra('iframe');
 
 type LazyMapProps = {
   boundingBox: string;
 };
 
 export const LazyMap: React.FC<LazyMapProps> = ({ boundingBox }) => (
-  <Box>
-    <Box
-      as="iframe"
+  <div>
+    <Iframe
       src={`https://www.openstreetmap.org/export/embed.html?bbox=${boundingBox}&layer=mapnik`}
-      width="100%"
-      height="300px"
-      border="0"
       allowFullScreen
       loading="lazy"
       title="First country map"
+      width="100%"
+      height="300px"
     />
-  </Box>
+  </div>
 );
 
 export default LazyMap;

@@ -11,7 +11,7 @@ export const SidebarAccordion: React.FC = () => {
   return (
     <Accordion
       allowMultiple
-      sx={{ overflow: 'auto', maxHeight: 'calc(100vh - 100px)' }}
+      css={{ overflow: 'auto', maxHeight: 'calc(100vh - 100px)' }}
     >
       {filteredCountries.map(country => (
         <CountryAccordionItem

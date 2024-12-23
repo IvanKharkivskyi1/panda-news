@@ -2,17 +2,7 @@ import { useFootballMatches, type Match } from '@/hooks/useFootballMatches';
 import type { Country } from '@/shared';
 import { useCountriesContext } from '@/store';
 import { ClampedText, TooltipHover } from '@/ui-components';
-import {
-  Box,
-  Grid,
-  Image,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Grid, Image, Tabs, Text } from '@chakra-ui/react';
 
 const groupMatchesByRegionAndCountry = (
   matches: Match[],
@@ -59,48 +49,45 @@ export const FootballMatches = () => {
   );
 
   return (
-    <Tabs
+    <Tabs.Root
       isLazy
-      variant="soft-rounded"
       colorScheme="green"
       maxW={isCollapsed ? '1300px' : '1120px'}
       p={0}
     >
-      <TabList overflowX="auto" pb={0.5}>
+      <Tabs.List overflowX="auto" pb={0.5}>
         {Object.keys(groupedMatches).map(region => (
-          <Tab maxH="48px" lineHeight="14px" key={region}>
+          <Tabs.Trigger maxH="48px" lineHeight="14px" key={region}>
             {region}
-          </Tab>
+          </Tabs.Trigger>
         ))}
-      </TabList>
+      </Tabs.List>
       <TabPanels>
         {Object.entries(groupedMatches).map(([region, countries]) => (
           <TabPanel px={0} key={region}>
-            <Tabs
+            <Tabs.Root
               isLazy
-              variant="soft-rounded"
               colorScheme="green"
               maxW={isCollapsed ? '1300px' : '1120px'}
               p={0}
             >
-              <TabList overflowX="auto" pb={0.5}>
+              <Tabs.List overflowX="auto" pb={0.5}>
                 {Object.keys(countries).map(countryName => (
-                  <Tab maxH="48px" lineHeight="14px" key={countryName}>
+                  <Tabs.Trigger maxH="48px" lineHeight="14px" key={countryName}>
                     {countryName}
-                  </Tab>
+                  </Tabs.Trigger>
                 ))}
-              </TabList>
+              </Tabs.List>
               <TabPanels>
                 {Object.entries(countries).map(([countryName, leagues]) => (
                   <TabPanel px={0} key={countryName}>
-                    <Tabs
+                    <Tabs.Root
                       isLazy
-                      variant="soft-rounded"
                       colorScheme="green"
                       maxW={isCollapsed ? '1300px' : '1120px'}
                       p={0}
                     >
-                      <TabList overflowX="auto" pb={0.5}>
+                      <Tabs.List overflowX="auto" pb={0.5}>
                         {Object.keys(leagues).map(leagueName => (
                           <TooltipHover label={leagueName} key={leagueName}>
                             <Tab key={leagueName} maxH="48px" lineHeight="14px">
@@ -110,7 +97,7 @@ export const FootballMatches = () => {
                             </Tab>
                           </TooltipHover>
                         ))}
-                      </TabList>
+                      </Tabs.List>
                       <TabPanels>
                         {Object.entries(leagues).map(
                           ([leagueName, matches]) => (
@@ -160,14 +147,14 @@ export const FootballMatches = () => {
                           )
                         )}
                       </TabPanels>
-                    </Tabs>
+                    </Tabs.Root>
                   </TabPanel>
                 ))}
               </TabPanels>
-            </Tabs>
+            </Tabs.Root>
           </TabPanel>
         ))}
       </TabPanels>
-    </Tabs>
+    </Tabs.Root>
   );
 };

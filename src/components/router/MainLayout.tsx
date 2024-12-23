@@ -1,5 +1,6 @@
 import { Sidebar } from '@/components';
-import { Flex, useStyleConfig } from '@chakra-ui/react';
+import { useMainStyles } from '@/ui-components';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 interface MainLayoutProps {
@@ -7,11 +8,10 @@ interface MainLayoutProps {
 }
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const styles = useStyleConfig('main');
-
+  const styles = useMainStyles();
   return (
     <Flex
-      sx={styles}
+      css={styles}
       overflow="hidden"
       p={2}
       boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)"

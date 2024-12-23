@@ -1,5 +1,6 @@
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useCountriesContext } from '@/store';
+import { useSidebarStyles } from '@/ui-components';
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -7,20 +8,14 @@ import {
   EmailIcon,
   StarIcon,
 } from '@chakra-ui/icons';
-import {
-  Box,
-  Flex,
-  IconButton,
-  Text,
-  useStyleConfig,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { SidebarAccordion } from './SidebarAccordion';
 
 export const Sidebar: React.FC = () => {
   const isMobile = useIsMobile();
   const { isCollapsed, setIsCollapsed } = useCountriesContext();
+  const sidebarStyles = useSidebarStyles();
 
   useEffect(() => {
     setIsCollapsed(isMobile);
@@ -30,8 +25,6 @@ export const Sidebar: React.FC = () => {
     setIsCollapsed(prev => !prev);
   };
 
-  const sidebarStyles = useStyleConfig('sidebar');
-
   return (
     <Box
       as="aside"
@@ -40,7 +33,7 @@ export const Sidebar: React.FC = () => {
       transition="width 0.3s"
       overflow="hidden"
       boxShadow="lg"
-      sx={sidebarStyles}
+      {...sidebarStyles}
     >
       <Flex
         alignItems="center"
@@ -56,31 +49,23 @@ export const Sidebar: React.FC = () => {
         <IconButton
           aria-label="Toggle Sidebar"
           colorScheme="green"
-          icon={isCollapsed ? <ArrowRightIcon /> : <ArrowLeftIcon />}
           onClick={toggleSidebar}
           variant="ghost"
-        />
-      </Flex>
-      <VStack align={isCollapsed ? 'center' : 'stretch'} mt={4} spacing={4}>
-        <IconButton
-          variant="ghost"
-          aria-label="Schedule"
-          icon={isCollapsed ? <CalendarIcon /> : undefined}
         >
+          {isCollapsed ? <ArrowRightIcon /> : <ArrowLeftIcon />}
+        </IconButton>
+      </Flex>
+      <VStack align={isCollapsed ? 'center' : 'stretch'} mt={4} gap={4}>
+        <IconButton variant="ghost" aria-label="Schedule">
+          {isCollapsed ? <CalendarIcon /> : undefined}
           {isCollapsed ? null : <Text>Schedule</Text>}
         </IconButton>
-        <IconButton
-          variant="ghost"
-          aria-label="Favorites"
-          icon={isCollapsed ? <StarIcon /> : undefined}
-        >
+        <IconButton variant="ghost" aria-label="Favorites">
+          {isCollapsed ? <StarIcon /> : undefined}
           {isCollapsed ? null : <Text>Favorites</Text>}
         </IconButton>
-        <IconButton
-          variant="ghost"
-          aria-label="Messages"
-          icon={isCollapsed ? <EmailIcon /> : undefined}
-        >
+        <IconButton variant="ghost" aria-label="Messages">
+          {isCollapsed ? <EmailIcon /> : undefined}
           {isCollapsed ? null : <Text>Messages</Text>}
         </IconButton>
         <SidebarAccordion />

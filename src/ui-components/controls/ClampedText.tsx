@@ -14,7 +14,7 @@ export const ClampedText: React.FC<ClampedTextProps> = ({
   return (
     <Text
       {...props}
-      sx={{
+      css={{
         display: '-webkit-box',
         WebkitBoxOrient: 'vertical',
         WebkitLineClamp: lines,

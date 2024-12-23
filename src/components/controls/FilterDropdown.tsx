@@ -1,4 +1,5 @@
-import { FormControl, FormLabel, Select } from '@chakra-ui/react';
+import { Field } from '@/components/ui/field';
+import { Select } from '@/components/ui/select';
 
 export const FilterDropdown = ({
   options,
@@ -10,10 +11,12 @@ export const FilterDropdown = ({
   label: string;
 }) => {
   return (
-    <FormControl>
-      <FormLabel>{label}:</FormLabel>
+    <Field>
+      <>{label}:</>
       <Select
-        onChange={e => onFilter(e.target.value)}
+        onChange={(e: { target: { value: string } }) =>
+          onFilter(e.target.value)
+        }
         size="lg"
         colorScheme="blue"
         variant="filled"
@@ -25,6 +28,6 @@ export const FilterDropdown = ({
           </option>
         ))}
       </Select>
-    </FormControl>
+    </Field>
   );
 };

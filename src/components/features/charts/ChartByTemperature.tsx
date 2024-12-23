@@ -2,8 +2,6 @@ import { useMemo } from 'react';
 
 import ReactECharts from 'echarts-for-react';
 
-import { useChartTheme } from '@/components';
-
 import { Card } from '@/ui-components';
 
 interface ChartByTemperatureProps {
@@ -17,7 +15,7 @@ export const ChartByTemperature: React.FC<ChartByTemperatureProps> = ({
   filteredCountries,
   title,
 }) => {
-  const chartColor = useChartTheme('mint.800', 'mint.100');
+  const chartColor = 'mint.800';
 
   const temperatureCategories = ['Cold', 'Moderate', 'Hot'];
 

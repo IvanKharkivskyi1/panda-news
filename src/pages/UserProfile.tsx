@@ -1,11 +1,11 @@
 import { auth } from '@/components/router/NavBar/Firebase';
-import { Box, Button, Text, useToast } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
+import { Box, Button, Text } from '@chakra-ui/react';
 import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 
 export const UserProfile: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const toast = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -17,7 +17,7 @@ export const UserProfile: React.FC = () => {
   const handleLogout = async () => {
     await signOut(auth);
     setCurrentUser(null);
-    toast({
+    toaster.create({
       title: 'Logged out!',
       description: 'You have been logged out.',
       status: 'info',

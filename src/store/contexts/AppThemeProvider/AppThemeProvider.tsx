@@ -1,17 +1,26 @@
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '@/components/ui/provider';
 import { createContext, ReactNode } from 'react';
-import { customTheme } from '@/ui-components';
+import '../../../styles/theme.styl';
 
 interface ThemeContextProps {
   isDarkTheme: boolean;
   toggleTheme: () => void;
 }
-const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
+
+export const ThemeContext = createContext<ThemeContextProps | undefined>(
+  undefined
+);
 
 export const AppThemeProvider = ({ children }: { children: ReactNode }) => {
+  // Встановлюємо значення для теми
+  const themes = {
+    light: 'light', // Клас для світлої теми
+    dark: 'dark', // Клас для темної теми
+  };
+
   return (
     <ThemeContext.Provider value={undefined}>
-      <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
+      <Provider value={themes}>{children}</Provider>
     </ThemeContext.Provider>
   );
 };

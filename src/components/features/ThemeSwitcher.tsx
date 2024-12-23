@@ -1,16 +1,17 @@
 import { IconButton, MoonIcon, SunIcon } from '@/ui-components';
-import { useColorMode } from '@chakra-ui/react';
+import { useTheme } from 'next-themes';
 
 export const ThemeSwitcher = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { theme, setTheme } = useTheme();
 
   return (
     <IconButton
       aria-label="Toggle theme"
-      icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-      onClick={toggleColorMode}
+      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       colorScheme="green"
       size="sm"
-    />
+    >
+      {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+    </IconButton>
   );
 };

@@ -8,7 +8,6 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
 import {
   createUserWithEmailAndPassword,
@@ -21,9 +20,8 @@ import React, { useEffect, useState } from 'react';
 import { AuthForm } from './AuthForm';
 
 export const AuthModal: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open, onOpen, onClose } = useDisclosure();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const toast = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -69,7 +67,7 @@ export const AuthModal: React.FC = () => {
       >
         {currentUser ? 'Logout' : 'Login/Register'}
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal open={open} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Authenticate</ModalHeader>

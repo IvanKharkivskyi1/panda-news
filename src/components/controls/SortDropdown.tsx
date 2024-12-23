@@ -1,4 +1,5 @@
-import { FormControl, FormLabel, Select } from '@chakra-ui/react';
+import { Field } from '@/components/ui/field';
+import { Select, Text } from '@chakra-ui/react';
 import React from 'react';
 
 type SortOption = {
@@ -20,8 +21,8 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
   const dropdownId = `sort-dropdown-${label.replace(/\s+/g, '-').toLowerCase()}`;
 
   return (
-    <FormControl>
-      <FormLabel htmlFor={dropdownId}>{label}</FormLabel>
+    <Field>
+      <Text htmlFor={dropdownId}>{label}</Text>
       <Select
         id={dropdownId}
         size="lg"
@@ -38,6 +39,6 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
           </option>
         ))}
       </Select>
-    </FormControl>
+    </Field>
   );
 };

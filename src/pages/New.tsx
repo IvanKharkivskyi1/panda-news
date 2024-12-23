@@ -1,6 +1,7 @@
 import { AuthForm } from '@/components/router/NavBar/AuthForm';
 import { auth } from '@/components/router/NavBar/Firebase';
-import { Box, Button, Heading, Text, useToast } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
+import { Box, Button, Heading, Text } from '@chakra-ui/react';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -12,7 +13,6 @@ import React, { useEffect, useState } from 'react';
 
 export const New: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const toast = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
@@ -34,7 +34,7 @@ export const New: React.FC = () => {
           password
         );
         setCurrentUser(userCredential.user);
-        toast({
+        toaster.create({
           title: 'Registration successful!',
           description: 'You can now log in.',
           status: 'success',
@@ -48,7 +48,7 @@ export const New: React.FC = () => {
           password
         );
         setCurrentUser(userCredential.user);
-        toast({
+        toaster.create({
           title: 'Login successful!',
           description: `Welcome back, ${email}!`,
           status: 'success',
@@ -58,7 +58,7 @@ export const New: React.FC = () => {
       }
     } catch (error) {
       if (error instanceof Error) {
-        toast({
+        toaster.create({
           title: isRegister ? 'Registration failed!' : 'Login failed!',
           description: error.message,
           status: 'error',
@@ -72,7 +72,7 @@ export const New: React.FC = () => {
   const handleLogout = async (): Promise<void> => {
     await signOut(auth);
     setCurrentUser(null);
-    toast({
+    toaster.create({
       title: 'Logged out!',
       description: 'You have been logged out.',
       status: 'info',

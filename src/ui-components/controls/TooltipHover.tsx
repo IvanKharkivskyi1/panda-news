@@ -1,4 +1,5 @@
-import { Box, Tooltip } from '@chakra-ui/react';
+import { Tooltip } from '@/components/ui/tooltip';
+import { Box } from '@chakra-ui/react';
 import type {
   JSXElementConstructor,
   ReactElement,

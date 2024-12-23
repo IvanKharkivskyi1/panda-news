@@ -1,11 +1,6 @@
+import { AccordionItem, AccordionItemTrigger } from '@/components/ui/accordion';
 import { useCountriesContext } from '@/store';
-import {
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
-  Image,
-  Text,
-} from '@chakra-ui/react';
+import { Image, Text } from '@chakra-ui/react';
 import React from 'react';
 
 interface CountryAccordionItemProps {
@@ -25,12 +20,12 @@ export const CountryAccordionItem: React.FC<CountryAccordionItemProps> = ({
 
   return (
     <AccordionItem>
-      {({ isExpanded }) => {
-        const shouldExpand = !isCollapsed && isExpanded;
+      {(props: { isExpanded: boolean }) => {
+        const shouldExpand = !isCollapsed && props.isExpanded;
 
         return (
           <>
-            <AccordionButton>
+            <AccordionItemTrigger>
               {!isCollapsed && (
                 <Text
                   flex={1}
@@ -47,17 +42,17 @@ export const CountryAccordionItem: React.FC<CountryAccordionItemProps> = ({
                 mr={4}
                 borderRadius="full"
               />
-            </AccordionButton>
+            </AccordionItemTrigger>
 
             {shouldExpand && (
-              <AccordionPanel pb={4}>
+              <AccordionItemTrigger pb={4}>
                 <Text>
-                  <strong>Temperature:</strong> {temperature}
+                  <strong>Temperature:</strong> {temperature ?? 'N/A'}
                 </Text>
                 <Text mt={2}>
                   <strong>Capital:</strong> {capital}
                 </Text>
-              </AccordionPanel>
+              </AccordionItemTrigger>
             )}
           </>
         );

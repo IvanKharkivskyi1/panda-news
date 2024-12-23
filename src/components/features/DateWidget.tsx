@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
+import { Field } from '@/components/ui/field';
 import { Card } from '@/ui-components';
 import { formatDate } from '@/utils/helpers/formatDate';
-import { Button, FormControl, Input, Text, VStack } from '@chakra-ui/react';
+import { Button, Input, Text, VStack } from '@chakra-ui/react';
 
 interface DateWidgetProps {
   initialDate?: string;
@@ -26,14 +27,14 @@ export const DateWidget: React.FC<DateWidgetProps> = ({ initialDate }) => {
         <Text fontWeight="bold" fontSize="lg">
           Date Widget
         </Text>
-        <FormControl>
+        <Field>
           <Input
             type="date"
             value={selectedDate}
             onChange={handleDateChange}
             placeholder="Select a date"
           />
-        </FormControl>
+        </Field>
         <Button colorScheme="green" onClick={handleTodayClick}>
           Set Today
         </Button>

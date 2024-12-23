@@ -1,21 +1,18 @@
-import { Button, ButtonProps, useStyleConfig } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useNavLinkStyles } from '@/ui-components';
+import React from 'react';
+import { LinkProps, Link as RouterLink } from 'react-router-dom';
 
-interface NavButtonProps extends ButtonProps {
+interface NavLinkProps extends Omit<LinkProps, 'color'> {
   to: string;
   children: React.ReactNode;
 }
 
-export const NavLink: React.FC<NavButtonProps> = ({
-  to,
-  children,
-  ...props
-}) => {
-  const styles = useStyleConfig('NavLink');
+export const NavLink: React.FC<NavLinkProps> = ({ to, children, ...props }) => {
+  const styles = useNavLinkStyles();
 
   return (
-    <Button as={RouterLink} to={to} sx={styles} variant="plain" {...props}>
+    <RouterLink to={to} {...props} {...styles}>
       <span style={{ position: 'relative', zIndex: 2 }}>{children}</span>
-    </Button>
+    </RouterLink>
   );
 };

@@ -1,6 +1,6 @@
 import {
   Button,
-  FormControl,
+  Field,
   FormLabel,
   Input,
   Switch,
@@ -31,7 +31,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
 
   return (
     <VStack spacing={4}>
-      <FormControl>
+      <Field>
         <FormLabel>Email</FormLabel>
         <Input
           type="email"
@@ -39,8 +39,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           onChange={e => setEmail(e.target.value)}
           placeholder="Enter your email"
         />
-      </FormControl>
-      <FormControl>
+      </Field>
+      <Field>
         <FormLabel>Password</FormLabel>
         <Input
           type="password"
@@ -48,8 +48,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           onChange={e => setPassword(e.target.value)}
           placeholder="Enter your password"
         />
-      </FormControl>
-      <FormControl display="flex" alignItems="center">
+      </Field>
+      <Field display="flex" alignItems="center">
         <FormLabel htmlFor="isRegister">Switch to Register</FormLabel>
         <Switch
           id="isRegister"
@@ -58,7 +58,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             target: { checked: boolean | ((prevState: boolean) => boolean) };
           }) => setIsRegister(e.target.checked)}
         />
-      </FormControl>
+      </Field>
       <Button onClick={handleSubmit}>
         {isRegister ? 'Register' : 'Login'}
       </Button>

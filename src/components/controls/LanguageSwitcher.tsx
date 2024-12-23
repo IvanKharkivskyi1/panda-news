@@ -1,14 +1,6 @@
 import React, { useMemo } from 'react';
 
-import {
-  Button,
-  Flex,
-  Image,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from '@chakra-ui/react';
+import { Button, Flex, Image, MenuContent, MenuItem, MenuRoot, MenuTrigger } from '@chakra-ui/react';
 
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
@@ -53,8 +45,8 @@ export const LanguageSwitcher: React.FC = () => {
   };
 
   return (
-    <Menu>
-      <MenuButton
+    <MenuRoot>
+      <MenuTrigger
         as={Button}
         colorScheme="green"
         size="sm"
@@ -69,8 +61,8 @@ export const LanguageSwitcher: React.FC = () => {
         rightIcon={<ChevronDownIcon />}
       >
         {AvailableLanguages[language]}
-      </MenuButton>
-      <MenuList>
+      </MenuTrigger>
+      <MenuContent>
         {Object.keys(AvailableLanguages).map(langKey => (
           <MenuItem
             key={langKey}
@@ -88,6 +80,6 @@ export const LanguageSwitcher: React.FC = () => {
           </MenuItem>
         ))}
       </MenuList>
-    </Menu>
+    </MenuRoot>
   );
 };

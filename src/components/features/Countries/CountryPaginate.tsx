@@ -15,13 +15,15 @@ export const CountryPaginate: React.FC<CountryPaginateProps> = ({
   return (
     <ReactPaginate
       previousLabel={
-        <Button size="sm" colorScheme="green" leftIcon={<ArrowBackIcon />}>
+        <Button size="sm" colorScheme="green">
+          <ArrowBackIcon />
           Previous
         </Button>
       }
       nextLabel={
-        <Button size="sm" colorScheme="green" rightIcon={<ArrowForwardIcon />}>
+        <Button size="sm" colorScheme="green">
           Next
+          <ArrowForwardIcon />
         </Button>
       }
       pageCount={pageCount}
