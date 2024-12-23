@@ -1,5 +1,5 @@
 import { Field } from '@/components/ui/field';
-import { Select } from '@/components/ui/select';
+import { SelectRoot } from '@chakra-ui/react';
 
 export const FilterDropdown = ({
   options,
@@ -13,13 +13,12 @@ export const FilterDropdown = ({
   return (
     <Field>
       <>{label}:</>
-      <Select
+      <SelectRoot
         onChange={(e: { target: { value: string } }) =>
           onFilter(e.target.value)
         }
         size="lg"
         colorScheme="blue"
-        variant="filled"
       >
         <option value="">All</option>
         {options.map(option => (
@@ -27,7 +26,7 @@ export const FilterDropdown = ({
             {option}
           </option>
         ))}
-      </Select>
+      </SelectRoot>
     </Field>
   );
 };

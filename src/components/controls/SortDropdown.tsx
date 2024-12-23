@@ -1,5 +1,5 @@
 import { Field } from '@/components/ui/field';
-import { Select, Text } from '@chakra-ui/react';
+import { SelectRoot, Text } from '@chakra-ui/react';
 import React from 'react';
 
 type SortOption = {
@@ -22,13 +22,14 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
 
   return (
     <Field>
-      <Text htmlFor={dropdownId}>{label}</Text>
-      <Select
+      <Text>{label}</Text>
+      <SelectRoot
         id={dropdownId}
         size="lg"
         colorScheme="green"
-        variant="filled"
-        onChange={e => {
+        onChange={(e: {
+          target: { value: { split: (arg0: string) => [any, any] } };
+        }) => {
           const [key, direction] = e.target.value.split('-');
           onSort(key, direction as 'asc' | 'desc');
         }}
@@ -38,7 +39,7 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
             {option.label}
           </option>
         ))}
-      </Select>
+      </SelectRoot>
     </Field>
   );
 };
