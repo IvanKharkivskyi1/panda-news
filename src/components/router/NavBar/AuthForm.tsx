@@ -1,11 +1,6 @@
-import {
-  Button,
-  Field,
-  FormLabel,
-  Input,
-  Switch,
-  VStack,
-} from '@chakra-ui/react';
+import { Field } from '@/components/ui/field';
+import { Switch } from '@/components/ui/switch';
+import { Button, Input, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 
 interface AuthFormProps {
@@ -30,9 +25,9 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   };
 
   return (
-    <VStack spacing={4}>
+    <VStack gap={4}>
       <Field>
-        <FormLabel>Email</FormLabel>
+        <Text>Email</Text>
         <Input
           type="email"
           value={email}
@@ -41,7 +36,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         />
       </Field>
       <Field>
-        <FormLabel>Password</FormLabel>
+        <Text>Password</Text>
         <Input
           type="password"
           value={password}
@@ -49,14 +44,15 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           placeholder="Enter your password"
         />
       </Field>
-      <Field display="flex" alignItems="center">
-        <FormLabel htmlFor="isRegister">Switch to Register</FormLabel>
+      <Field display="flex" alignItems="center" gap={4}>
+        <Text>Switch to Register</Text>
         <Switch
-          id="isRegister"
           isChecked={isRegister}
           onChange={(e: {
             target: { checked: boolean | ((prevState: boolean) => boolean) };
           }) => setIsRegister(e.target.checked)}
+          id="isRegister"
+          colorScheme="green"
         />
       </Field>
       <Button onClick={handleSubmit}>

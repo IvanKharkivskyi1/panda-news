@@ -1,6 +1,6 @@
-import { AccordionItem, AccordionItemTrigger } from '@/components/ui/accordion';
+import { AccordionItem } from '@/components/ui/accordion';
 import { useCountriesContext } from '@/store';
-import { Image, Text } from '@chakra-ui/react';
+import { AccordionItemTrigger, Image, Text } from '@chakra-ui/react';
 import React from 'react';
 
 interface CountryAccordionItemProps {
@@ -45,7 +45,7 @@ export const CountryAccordionItem: React.FC<CountryAccordionItemProps> = ({
             </AccordionItemTrigger>
 
             {shouldExpand && (
-              <AccordionItemTrigger pb={4}>
+              <AccordionItemTrigger>
                 <Text>
                   <strong>Temperature:</strong> {temperature ?? 'N/A'}
                 </Text>

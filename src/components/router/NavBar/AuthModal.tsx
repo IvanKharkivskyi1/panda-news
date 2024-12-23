@@ -1,12 +1,14 @@
+'use client';
+
 import { auth } from '@/components/router/NavBar/Firebase';
+import { toaster } from '@/components/ui/toaster';
 import {
   Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  Portal,
   useDisclosure,
 } from '@chakra-ui/react';
 import {
@@ -38,14 +40,14 @@ export const AuthModal: React.FC = () => {
     try {
       if (isRegister) {
         await createUserWithEmailAndPassword(auth, email, password);
-        toast({ title: 'Registration successful!', status: 'success' });
+        toaster({ title: 'Registration successful!', status: 'success' });
       } else {
         await signInWithEmailAndPassword(auth, email, password);
-        toast({ title: 'Login successful!', status: 'success' });
+        toaster({ title: 'Login successful!', status: 'success' });
         onClose();
       }
     } catch (error) {
-      toast({
+      toaster({
         title: isRegister ? 'Registration failed!' : 'Login failed!',
         description: error instanceof Error ? error.message : 'Unknown error',
         status: 'error',
@@ -55,7 +57,7 @@ export const AuthModal: React.FC = () => {
 
   const handleLogout = async () => {
     await signOut(auth);
-    toast({ title: 'Logged out!', status: 'info' });
+    toaster({ title: 'Logged out!', status: 'info' });
   };
 
   return (
@@ -67,18 +69,19 @@ export const AuthModal: React.FC = () => {
       >
         {currentUser ? 'Logout' : 'Login/Register'}
       </Button>
-      <Modal open={open} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Authenticate</ModalHeader>
-          <ModalBody>
-            <AuthForm onAuthComplete={() => {}} onAuth={handleAuth} />
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      {open && (
+        <Portal>
+          <DialogContent>
+            <DialogHeader>Authenticate</DialogHeader>
+            <DialogBody>
+              <AuthForm onAuthComplete={() => {}} onAuth={handleAuth} />
+            </DialogBody>
+            <DialogFooter>
+              <Button onClick={onClose}>Close</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Portal>
+      )}
     </>
   );
 };

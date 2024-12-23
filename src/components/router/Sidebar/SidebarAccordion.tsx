@@ -1,6 +1,6 @@
 import { useCountryFilters } from '@/hooks';
 import { useCountriesContext } from '@/store';
-import { Accordion } from '@chakra-ui/react';
+import { AccordionRoot } from '@chakra-ui/react';
 import React from 'react';
 import { CountryAccordionItem } from './CountryAccordionItem';
 
@@ -9,7 +9,7 @@ export const SidebarAccordion: React.FC = () => {
   const { filteredCountries } = useCountryFilters(countries);
 
   return (
-    <Accordion
+    <AccordionRoot
       allowMultiple
       css={{ overflow: 'auto', maxHeight: 'calc(100vh - 100px)' }}
     >
@@ -22,6 +22,6 @@ export const SidebarAccordion: React.FC = () => {
           capital={country.capital[0]}
         />
       ))}
-    </Accordion>
+    </AccordionRoot>
   );
 };
