@@ -64,8 +64,9 @@ export const FootballMatches = () => {
       variant="soft-rounded"
       colorScheme="green"
       maxW={isCollapsed ? '1300px' : '1120px'}
+      p={0}
     >
-      <TabList overflowX="auto" pb={1}>
+      <TabList overflowX="auto" pb={0.5}>
         {Object.keys(groupedMatches).map(region => (
           <Tab maxH="48px" lineHeight="14px" key={region}>
             {region}
@@ -74,14 +75,15 @@ export const FootballMatches = () => {
       </TabList>
       <TabPanels>
         {Object.entries(groupedMatches).map(([region, countries]) => (
-          <TabPanel key={region}>
+          <TabPanel px={0} key={region}>
             <Tabs
               isLazy
               variant="soft-rounded"
               colorScheme="green"
               maxW={isCollapsed ? '1300px' : '1120px'}
+              p={0}
             >
-              <TabList overflowX="auto" pb={1}>
+              <TabList overflowX="auto" pb={0.5}>
                 {Object.keys(countries).map(countryName => (
                   <Tab maxH="48px" lineHeight="14px" key={countryName}>
                     {countryName}
@@ -90,14 +92,15 @@ export const FootballMatches = () => {
               </TabList>
               <TabPanels>
                 {Object.entries(countries).map(([countryName, leagues]) => (
-                  <TabPanel key={countryName}>
+                  <TabPanel px={0} key={countryName}>
                     <Tabs
                       isLazy
                       variant="soft-rounded"
                       colorScheme="green"
                       maxW={isCollapsed ? '1300px' : '1120px'}
+                      p={0}
                     >
-                      <TabList overflowX="auto" pb={1}>
+                      <TabList overflowX="auto" pb={0.5}>
                         {Object.keys(leagues).map(leagueName => (
                           <TooltipHover label={leagueName} key={leagueName}>
                             <Tab key={leagueName} maxH="48px" lineHeight="14px">
@@ -111,7 +114,7 @@ export const FootballMatches = () => {
                       <TabPanels>
                         {Object.entries(leagues).map(
                           ([leagueName, matches]) => (
-                            <TabPanel key={leagueName}>
+                            <TabPanel px={0} key={leagueName}>
                               <Grid
                                 gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
                                 gap={4}
